@@ -52,36 +52,28 @@ namespace ConsoleGraphics
             if (y < 0)
                 return;
 
-            if (y >= (int)displayBuffer.size())
+            if (y >= size.ws_row)
                 return;
 
-            if (x >= (int)displayBuffer[y].size())
+            if (x >= size.ws_col)
                 return;
                 
-            displayBuffer[y][x] = c;
+            displayBuffer[y * size.ws_col + x] = c;
         }
 
         void    FillIn(char symbol)
         {
-            for (size_t r = 0; r < displayBuffer.size(); r++)
+            for (size_t i = 0; i < displayBuffer.size(); i++)
             {
-                for (size_t c = 0; c < displayBuffer[r].size(); c++)
-                {
-                    displayBuffer[r][c] = symbol;
-                }
+                displayBuffer[i] = symbol;
             }
         }
 
         void    Render()
         {
-            gotoxy(0, (int)displayBuffer.size());
-            for (size_t r = 0; r < displayBuffer.size(); r++)
-            {
-                gotoxy(0, (int)r);
-                fwrite(displayBuffer[r].data(), displayBuffer[r].size(), 1, stdout);
-            }
-            gotoxy(1, (int)displayBuffer.size());
-
+            gotoxy(0, 0);
+            fwrite(displayBuffer.data(), displayBuffer.size(), 1, stdout);
+      
             fflush(stdout);
         }
     protected:
@@ -89,16 +81,10 @@ namespace ConsoleGraphics
         {
             ioctl(STDOUT_FILENO, TIOCGWINSZ, &size); // Получение размеров консоли
             displayBuffer.clear();
-
-            for (int i = 0; i < size.ws_row; i++)
-            {
-                std::vector<char> row;
-                row.resize(size.ws_col);
-                displayBuffer.emplace_back(row);
-            }
+            displayBuffer.resize(size.ws_col * size.ws_row);
         }
 
-        std::vector<std::vector<char>> displayBuffer;
+        std::vector<char> displayBuffer;
         
         winsize size;
     };
