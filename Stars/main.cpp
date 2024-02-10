@@ -47,14 +47,10 @@ int main ()
 Stars::StarDescription	SetPerspective(const Stars::StarDescription& star)
 {
 	Stars::StarDescription	perspectStar = star;
-	double	k = 1.0;
 	double	z = perspectStar.z;
 
-	if (z == 0.0)
-		z = 1.0;
-
-	perspectStar.x = (perspectStar.x * k) / (z + k);
-	perspectStar.y = (perspectStar.y * k) / (z + k);
+	perspectStar.x = perspectStar.x / z;
+	perspectStar.y = perspectStar.y / z;
 
 	return 	perspectStar;
 }

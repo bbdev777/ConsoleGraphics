@@ -65,7 +65,7 @@ namespace Stars
         }
 
     protected:
-        double defaultZ = -100.0;
+        double defaultZ = -120.0;
 
         std::vector<StarDescription> starList;
     };
