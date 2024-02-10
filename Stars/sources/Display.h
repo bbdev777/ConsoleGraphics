@@ -87,7 +87,7 @@ namespace ConsoleGraphics
                 else if (item == '+')
                     set_display_atrib(F_CYAN);
                 else
-                    set_display_atrib(F_YELLOW);
+                    set_display_atrib(F_WHITE);
 
                 fprintf(stdout, "%c", item);
             }
