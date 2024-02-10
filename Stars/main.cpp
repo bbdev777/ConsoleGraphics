@@ -31,7 +31,7 @@ int AppCycle()
 		PutStarsToDisplay(display, starsModel);
         
         display.RenderColored();
-        usleep(4 * 1000);
+        usleep(10 * 1000);
 		
 		std::chrono::time_point<std::chrono::system_clock>  endTime = std::chrono::system_clock::now();
 		std::chrono::duration<double> delta = endTime - startTime;
