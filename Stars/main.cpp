@@ -2,7 +2,11 @@
 #include <signal.h>
 #include <memory.h>
 #include <atomic>
+#include <chrono>
+
 #include "Display.h"
+#include "Timer.h"
+#include "StarsModel.h"
 
 void Display();
 
@@ -24,24 +28,34 @@ void SetSigTerm()
 	signal(SIGABRT, action.sa_handler);
 }
 
+void	ProcessTimers(std::vector<Common::Timer>& timers)
+{
+	for (auto& item : timers)
+	{
+		item.Tick();
+	}
+}
+
 int main ()
 {
-    ConsoleGraphics::Display display;
-
-    int p = 0;
+    ConsoleGraphics::Display	display;
+	Stars::StarsModel 			starsModel;
+	std::vector<Common::Timer>	timers;
     
+	timers.push_back(Common::Timer(100.0, [&]()
+	{
+		starsModel.GenerateStars();
+	}));
+
 	while(run)
     { 
+		ProcessTimers(timers);
+
         display.FillIn(' ');
-        display.SetCharAt(p, p, '*');
         
         display.Render();
         usleep(16 * 1000);
-
-        p++;
-        if (p > display.GetHeigth())
-            p = 0;
-    }
+	}
  
     return 0;
 }
