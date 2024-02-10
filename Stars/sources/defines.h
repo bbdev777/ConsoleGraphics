@@ -1,5 +1,5 @@
-#ifndef __TERM_EXAMPLE__
-#define __TERM_EXAMPLE__
+#ifndef __CONSOLE_COMMANDS__
+#define __CONSOLE_COMMANDS__
 
 #define ESC "\033"
 
@@ -33,4 +33,13 @@
 #define B_CYAN		46
 #define B_WHITE		47
 
-#endif /*__TERM_EXAMPLE__*/
+#define home() printf(ESC "[H")
+#define clrscr() printf(ESC "[2J")
+#define gotoxy(x, y) printf(ESC "[%d;%dH", y, x);
+#define hide_cursor() printf(ESC "[?25l");
+#define show_cursor() printf(ESC "[?25h");
+// Set Display Attribute Mode	<ESC>[{attr1};...;{attrn}m
+#define resetcolor() printf(ESC "[0m")
+#define set_display_atrib(color) printf(ESC "[%dm", color)
+
+#endif /*__CONSOLE_COMMANDS__*/
