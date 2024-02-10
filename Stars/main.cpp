@@ -19,19 +19,26 @@ int main ()
 {
     ConsoleGraphics::Display	display;
 	Stars::StarsModel 			starsModel;
+	double						baseStep = 1.0, k = 1.0;
 
 	while(run)
-    { 
+    {
+		std::chrono::time_point<std::chrono::system_clock>  startTime = std::chrono::system_clock::now(); 
 		display.Resize();
 
-		starsModel.MoveStars(2.0);
+		starsModel.MoveStars(baseStep * k);
 
 		display.FillIn(' ');
 
 		PutStarsToDisplay(display, starsModel);
         
         display.RenderColored();
-        usleep(16 * 1000);
+        usleep(4 * 1000);
+		
+		std::chrono::time_point<std::chrono::system_clock>  endTime = std::chrono::system_clock::now();
+		std::chrono::duration<double> delta = endTime - startTime;
+
+		k = delta.count() / (1.0 / 60.0);
 	}
  
     return 0;
