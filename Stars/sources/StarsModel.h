@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <math.h>
 #include <list>
 
 namespace Stars
@@ -17,34 +18,48 @@ namespace Stars
     public:
         StarsModel()
         {
+            GenerateStars();
         }
 
-        void    MoveStars(double step)
+        void MoveStars(double step)
         {
-            auto iter = starList.begin();
-
-            while (iter != starList.end())
+            for (auto &item : starList)
             {
-                auto current = iter;
-                iter++;
-                
-                current->z += step;
-                if (current->z >= 0.0)
-                    starList.erase(current);
+                item.z += step;
+
+                if(item.z >= 0.0)
+                    item.z = defaultZ;
             }
         }
-    
-        void    GenerateStars()
+
+        const std::vector<StarDescription> &GetStars() const
         {
-            starList.push_back({-1.0, 1.0, defaultZ});
-            starList.push_back({1.0, 1.0, defaultZ});
-            starList.push_back({-1.0, 1.0, defaultZ});
-            starList.push_back({-1.0, -1.0, defaultZ});
+            return starList;
         }
 
-protected:
-        double      defaultZ = -100.0;
+        double  GetMaxZ() const
+        {
+            return defaultZ;
+        }
 
-        std::list<StarDescription> starList;
+        void GenerateStars()
+        {
+            int     maxX = 6000;
+            int     maxY = maxX / 2;
+            int     maxZ = (int)fabs(defaultZ);
+
+            for (int i = 0; i < 50; i++)
+            {
+                starList.push_back({-(double)(rand() % maxX), (double)(rand() % maxY), -(double)(rand() % maxZ)});
+                starList.push_back({(double)(rand() % maxX), (double)(rand() % maxY), -(double)(rand() % maxZ)});
+                starList.push_back({(double)(rand() % maxX), -(double)(rand() % maxY), -(double)(rand() % maxZ)});
+                starList.push_back({-(double)(rand() % maxX), -(double)(rand() % maxY), -(double)(rand() % maxZ)});
+            }
+        }
+
+    protected:
+        double defaultZ = -100.0;
+
+        std::vector<StarDescription> starList;
     };
 }
