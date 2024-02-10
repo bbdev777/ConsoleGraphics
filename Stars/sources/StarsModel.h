@@ -48,7 +48,7 @@ namespace Stars
             int     maxY = maxX / 2;
             int     maxZ = (int)fabs(defaultZ);
 
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 100; i++)
             {
                 starList.push_back({-(double)(rand() % maxX), (double)(rand() % maxY), -(double)(rand() % maxZ)});
                 starList.push_back({(double)(rand() % maxX), (double)(rand() % maxY), -(double)(rand() % maxZ)});

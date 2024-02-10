@@ -24,9 +24,10 @@ namespace ConsoleGraphics
     public:
         Display()
         {
-            Resize();
-            clrscr();
-            hide_cursor();
+            size.ws_col = -1;
+            size.ws_row = -1;
+            size.ws_xpixel = -1;
+            size.ws_ypixel = -1;
         }
 
         ~Display()
@@ -78,10 +79,52 @@ namespace ConsoleGraphics
         void    Render()
         {
             gotoxy(0, 0);
+
             fwrite(displayBuffer.data(), displayBuffer.size(), 1, stdout);
       
             fflush(stdout);
         }
+
+        void    RenderColored()
+        {
+            gotoxy(0, 0);
+            
+            for (auto& item : displayBuffer)
+            {
+                if (item == '.')
+                    set_display_atrib(F_BLUE);
+                else if (item == '+')
+                    set_display_atrib(F_CYAN);
+                else
+                    set_display_atrib(F_YELLOW);
+
+                fprintf(stdout, "%c", item);
+            }
+
+            resetcolor();
+            fflush(stdout);
+        }
+        
+        void    Resize()
+        {
+            winsize localSize;
+
+            ioctl(STDOUT_FILENO, TIOCGWINSZ, &localSize); // Получение размеров консоли
+
+            if (memcmp(&localSize, &size, sizeof(winsize)) == 0)
+                return;
+
+            size = localSize;
+            displayBuffer.clear();
+            displayBuffer.resize(size.ws_col * size.ws_row);
+
+            zBuffer.clear();
+            zBuffer.resize(displayBuffer.size());
+
+            clrscr();
+            hide_cursor();
+        }
+
     protected:
         bool    IsOutOfScreen(int x, int y)
         {
@@ -98,16 +141,6 @@ namespace ConsoleGraphics
                 return true;
 
             return false;
-        }
-
-        void    Resize()
-        {
-            ioctl(STDOUT_FILENO, TIOCGWINSZ, &size); // Получение размеров консоли
-            displayBuffer.clear();
-            displayBuffer.resize(size.ws_col * size.ws_row);
-
-            zBuffer.clear();
-            zBuffer.resize(displayBuffer.size());
         }
 
         std::vector<double> zBuffer;

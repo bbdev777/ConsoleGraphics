@@ -23,13 +23,15 @@ int main ()
 
 	while(run)
     { 
+		display.Resize();
+		
 		starsModel.MoveStars(2.0);
 
 		display.FillIn(' ');
 
 		PutStarsToDisplay(display, starsModel);
         
-        display.Render();
+        display.RenderColored();
         usleep(16 * 1000);
 	}
  
