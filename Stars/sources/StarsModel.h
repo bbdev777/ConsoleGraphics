@@ -19,8 +19,12 @@ namespace Stars
             int maxZ = (int)fabs(defaultZ);
             int signX = rand() % 2 == 1 ? -1 : 1;
             int signY = rand() % 2 == 1 ? 1 : -1;
+            StarDescription description {(double)(signX * rand() % maxX), (double)(signY * rand() % maxY), -(double)(rand() % maxZ)};
 
-            return {(double)(signX * rand() % maxX), (double)(signY * rand() % maxY), -(double)(rand() % maxZ)};
+            //double k = 1.0 / sqrt(description.x * description.x + description.y * description.y);
+
+
+            return description;
         }
     };
 
