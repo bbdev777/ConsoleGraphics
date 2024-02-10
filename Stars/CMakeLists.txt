@@ -19,5 +19,6 @@ add_executable(Stars
 target_include_directories(Stars PUBLIC
     sources
 )
+
 target_link_libraries(Stars
 )
