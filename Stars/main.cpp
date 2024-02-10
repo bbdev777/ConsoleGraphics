@@ -5,10 +5,7 @@
 #include <chrono>
 
 #include "Display.h"
-#include "Timer.h"
 #include "StarsModel.h"
-
-void Display();
 
 std::atomic_bool	run = true;
 
@@ -23,9 +20,9 @@ int main ()
 
 	while(run)
     {
-		std::chrono::time_point<std::chrono::system_clock>  startTime = std::chrono::system_clock::now(); 
 		display.Resize();
 
+		std::chrono::time_point<std::chrono::system_clock>  startTime = std::chrono::system_clock::now();
 		starsModel.MoveStars(baseStep * k);
 
 		display.FillIn(' ');

@@ -3,6 +3,7 @@
 
 #include <math.h>
 #include <list>
+#include <random>
 
 namespace Stars
 {
@@ -11,21 +12,6 @@ namespace Stars
         double x = 0.0;
         double y = 0.0;
         double z = 0.0;
-
-        static StarDescription Randomize(double defaultZ)
-        {
-            int maxX = 6000;
-            int maxY = maxX / 2;
-            int maxZ = (int)fabs(defaultZ);
-            int signX = rand() % 2 == 1 ? -1 : 1;
-            int signY = rand() % 2 == 1 ? 1 : -1;
-            StarDescription description {(double)(signX * rand() % maxX), (double)(signY * rand() % maxY), -(double)(rand() % maxZ)};
-
-            //double k = 1.0 / sqrt(description.x * description.x + description.y * description.y);
-
-
-            return description;
-        }
     };
 
     class StarsModel
@@ -44,7 +30,7 @@ namespace Stars
 
                 if(item.z >= 0.0)
                 {
-                    item = StarDescription::Randomize(defaultZ);
+                    item = RandomizeSC(defaultZ);
                     item.z = defaultZ;
                 }
             }
@@ -62,15 +48,36 @@ namespace Stars
 
         void GenerateStars()
         {
-            for (int i = 0; i < 400; i++)
+            for (int i = 0; i < 250; i++)
             {               
-                starList.push_back(StarDescription::Randomize(defaultZ));
+                starList.push_back(RandomizeSC(defaultZ));
             }
         }
 
     protected:
+        double DegToRad(double x)
+        {
+            return x * (3.14159 / 180.0);
+        }
+
+        StarDescription RandomizeSC(double defaultZ)
+        {
+            std::uniform_int_distribution<int> distribution(750, 6000);
+            int radiusX = distribution(generator);
+            int radiusY = radiusX / 2;
+            double  radians = DegToRad(double(rand() % 359));
+            double  x = (double)(radiusX) * cos(radians);
+            double  y = (double)(radiusY) * sin(radians);
+            double  z = -(double)(rand() % (int)fabs(defaultZ));
+
+            StarDescription description {x, y, z};
+
+            return description;
+        }
+
         double defaultZ = -120.0;
 
+        std::random_device generator;
         std::vector<StarDescription> starList;
     };
 }
