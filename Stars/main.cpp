@@ -3,18 +3,19 @@
 #include <memory.h>
 #include <atomic>
 #include <chrono>
+#include <thread>
 
 #include "Display.h"
 #include "StarsModel.h"
 
-std::atomic_bool	run = true;
+std::atomic_bool run = true;
 
-void	SetSigTerm();
-void	PutStarsToDisplay(ConsoleGraphics::Display& display, Stars::StarsModel& starModel);
+void SetSigTerm();
+void PutStarsToDisplay(ConsoleGraphics::Display &display, Stars::StarsModel &starModel);
 
-int main ()
+int AppCycle()
 {
-    ConsoleGraphics::Display	display;
+   	ConsoleGraphics::Display	display;
 	Stars::StarsModel 			starsModel;
 	double						baseStep = 1.0, k = 1.0;
 
@@ -37,43 +38,49 @@ int main ()
 
 		k = delta.count() / (1.0 / 60.0);
 	}
- 
-    return 0;
+
+	return 0;
 }
 
-Stars::StarDescription	SetPerspective(const Stars::StarDescription& star)
+int	main()
 {
-	Stars::StarDescription	perspectStar = star;
-	double	z = perspectStar.z;
+	SetSigTerm();
+	return AppCycle();
+}
+
+Stars::StarDescription SetPerspective(const Stars::StarDescription &star)
+{
+	Stars::StarDescription perspectStar = star;
+	double z = perspectStar.z;
 
 	perspectStar.x = perspectStar.x / z;
 	perspectStar.y = perspectStar.y / z;
 
-	return 	perspectStar;
+	return perspectStar;
 }
 
-void	PutStarsToDisplay(ConsoleGraphics::Display& display, Stars::StarsModel& starModel)
+void PutStarsToDisplay(ConsoleGraphics::Display &display, Stars::StarsModel &starModel)
 {
-		const auto& starList = starModel.GetStars();
-		double	halfWidth = (double)display.GetWidth() / 2.0;
-		double	halfHeight = (double)display.GetHeight() / 2.0;
-		double	distancePart = starModel.GetMaxZ() / 5.0;
+	const auto &starList = starModel.GetStars();
+	double halfWidth = (double)display.GetWidth() / 2.0;
+	double halfHeight = (double)display.GetHeight() / 2.0;
+	double distancePart = starModel.GetMaxZ() / 5.0;
 
-		for (auto& star : starList)
-		{
-			Stars::StarDescription	curStar = SetPerspective(star);
-			char 	starModel = '.';
+	for (auto &star : starList)
+	{
+		Stars::StarDescription curStar = SetPerspective(star);
+		char starModel = '.';
 
-			if (curStar.z > distancePart * 3.0)
-				starModel = '*';
-			else if (curStar.z > (distancePart * 4.0))
-				starModel = '+';
+		if (curStar.z > distancePart * 3.0)
+			starModel = '*';
+		else if (curStar.z > (distancePart * 4.0))
+			starModel = '+';
 
-			display.SetCharAt(curStar.x + halfWidth, 
-								curStar.y + halfHeight, 
-								curStar.z, 
-								starModel);
-		}
+		display.SetCharAt(curStar.x + halfWidth,
+						  curStar.y + halfHeight,
+						  curStar.z,
+						  starModel);
+	}
 }
 
 void SetSigTerm()
