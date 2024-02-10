@@ -11,6 +11,17 @@ namespace Stars
         double x = 0.0;
         double y = 0.0;
         double z = 0.0;
+
+        static StarDescription Randomize(double defaultZ)
+        {
+            int maxX = 6000;
+            int maxY = maxX / 2;
+            int maxZ = (int)fabs(defaultZ);
+            int signX = rand() % 2 == 1 ? -1 : 1;
+            int signY = rand() % 2 == 1 ? 1 : -1;
+
+            return {(double)(signX * rand() % maxX), (double)(signY * rand() % maxY), -(double)(rand() % maxZ)};
+        }
     };
 
     class StarsModel
@@ -28,7 +39,10 @@ namespace Stars
                 item.z += step;
 
                 if(item.z >= 0.0)
+                {
+                    item = StarDescription::Randomize(defaultZ);
                     item.z = defaultZ;
+                }
             }
         }
 
@@ -44,16 +58,9 @@ namespace Stars
 
         void GenerateStars()
         {
-            int     maxX = 6000;
-            int     maxY = maxX / 2;
-            int     maxZ = (int)fabs(defaultZ);
-
-            for (int i = 0; i < 100; i++)
-            {
-                starList.push_back({-(double)(rand() % maxX), (double)(rand() % maxY), -(double)(rand() % maxZ)});
-                starList.push_back({(double)(rand() % maxX), (double)(rand() % maxY), -(double)(rand() % maxZ)});
-                starList.push_back({(double)(rand() % maxX), -(double)(rand() % maxY), -(double)(rand() % maxZ)});
-                starList.push_back({-(double)(rand() % maxX), -(double)(rand() % maxY), -(double)(rand() % maxZ)});
+            for (int i = 0; i < 400; i++)
+            {               
+                starList.push_back(StarDescription::Randomize(defaultZ));
             }
         }
 
