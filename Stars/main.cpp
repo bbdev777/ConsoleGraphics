@@ -12,29 +12,8 @@ void Display();
 
 std::atomic_bool	run = true;
 
-void SetSigTerm()
-{
-	struct sigaction action;
-	memset(&action, 0, sizeof(action));
-
-	action.sa_handler = [](int signum)
-	{
-		run = false;
-	};
-
-	sigaction(SIGTERM, &action, NULL);
-
-	signal(SIGINT, action.sa_handler);
-	signal(SIGABRT, action.sa_handler);
-}
-
-void	ProcessTimers(std::vector<Common::Timer>& timers)
-{
-	for (auto& item : timers)
-	{
-		item.Tick();
-	}
-}
+void	SetSigTerm();
+void	ProcessTimers(std::vector<Common::Timer>& timers);
 
 int main ()
 {
@@ -58,6 +37,30 @@ int main ()
 	}
  
     return 0;
+}
+
+void	ProcessTimers(std::vector<Common::Timer>& timers)
+{
+	for (auto& item : timers)
+	{
+		item.Tick();
+	}
+}
+
+void SetSigTerm()
+{
+	struct sigaction action;
+	memset(&action, 0, sizeof(action));
+
+	action.sa_handler = [](int signum)
+	{
+		run = false;
+	};
+
+	sigaction(SIGTERM, &action, NULL);
+
+	signal(SIGINT, action.sa_handler);
+	signal(SIGABRT, action.sa_handler);
 }
 
 void Display()
