@@ -1,6 +1,6 @@
 #pragma once
 
-#include <sys/ioctl.h>
+#include <memory.h>
 #include <unistd.h>
 #include <vector>
 #include <string>
@@ -123,7 +123,7 @@ namespace ConsoleGraphics
 
             getmaxyx(stdscr, localSize.ws_row, localSize.ws_col);
 
-            if (memcmp(&localSize, &size, sizeof(winsize)) == 0)
+            if (memcmp(&localSize, &size, sizeof(ScreenSize)) == 0)
                 return;
 
             size = localSize;
