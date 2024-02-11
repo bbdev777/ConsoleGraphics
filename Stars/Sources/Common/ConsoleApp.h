@@ -34,6 +34,8 @@ namespace ConsoleGraphics
             {
                 display.Resize();
 
+		        hide_cursor();
+                
                 std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
                 display.FillIn(' ');
 
