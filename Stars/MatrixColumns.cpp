@@ -20,7 +20,7 @@ int	main()
 
         PutColumnsToDisplay(display, matrixColumnModel);
 
-		display.SetStringAt(int(textPos), 1, message, F_WHITE);
+		display.SetStringAt(int(textPos), 0, message, F_WHITE);
 
 		textPos -= 0.25;
 

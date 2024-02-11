@@ -106,9 +106,9 @@ namespace ConsoleGraphics
 
         void    Render()
         {
-            for (int i = 0; i < size.ws_row - 1; i++)
+            for (int i = 0; i < size.ws_row; i++)
             {
-                for (int j = 0; j < size.ws_col - 2; j++)
+                for (int j = 0; j < size.ws_col; j++)
                 {
                     int index = i * size.ws_col + j;
                     int intensity = A_NORMAL;
@@ -148,16 +148,16 @@ namespace ConsoleGraphics
     protected:
         bool    IsOutOfScreen(int x, int y)
         {
-            if (x < 1)
+            if (x < 0)
                 return true;
 
-            if (y < 1)
+            if (y < 0)
                 return  true;
 
-            if (y >= size.ws_row - 1)
+            if (y >= size.ws_row)
                 return  true;
 
-            if (x >= size.ws_col - 1)
+            if (x >= size.ws_col)
                 return true;
 
             return false;
