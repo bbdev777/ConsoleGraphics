@@ -83,7 +83,7 @@ namespace ConsoleGraphics
             for (auto& item : displayBuffer)
             {
                 if (item == '.')
-                    set_display_atrib(F_BLUE);
+                    set_display_atrib(F_GREEN);
                 else if (item == '+')
                     set_display_atrib(F_CYAN);
                 else
