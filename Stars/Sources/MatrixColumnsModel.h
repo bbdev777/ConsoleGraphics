@@ -25,6 +25,7 @@ namespace MatrixColumns
         MatrixColumnsModel()
         {
         }
+
         void    SetBounds(int rightBound, int lowerBound)
         {
             this->rightBound = rightBound;
@@ -84,7 +85,7 @@ namespace MatrixColumns
 
         int             rightBound = 0; 
         int             lowerBound = 0;
-        std::string    symbols = "!@#$%^&*()_+QWERTYUIOP{}ASDFGHJKLqwertyuiopasdfghjklzxcvbnm:|ZXCVBNM<>1234567890";
+        std::string     symbols = "!@#$%^&*()_+QWERTYUIOP{}ASDFGHJKLqwertyuiopasdfghjklzxcvbnm:|ZXCVBNM<>1234567890";
         std::vector<ColumnDescription> columns;
     };
 }

@@ -132,6 +132,8 @@ namespace ConsoleGraphics
 
             shadowBuffer.clear();
             shadowBuffer.resize(displayBuffer.size());
+
+            FillIn(' ');
         }
 
     protected:
