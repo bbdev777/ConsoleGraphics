@@ -3,6 +3,7 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 #include <vector>
+#include <string>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -26,12 +27,12 @@ namespace ConsoleGraphics
             show_cursor();
         }
 
-        int     GetWidth()
+        int     GetWidth() const
         {
             return size.ws_col;
         }
 
-        int     GetHeight()
+        int     GetHeight() const
         {
             return size.ws_row;
         }
@@ -56,6 +57,14 @@ namespace ConsoleGraphics
 
              displayBuffer[index] = c;
              zBuffer[index] = z;   
+        }
+
+        void    SetStringAt(int x, int y, const std::string& text)
+        {
+            for (int i = 0, c = text.length(); i < c; i++)
+            {
+                SetCharAt(x + i, y, text[i]);
+            }
         }
 
         void    FillIn(char symbol)

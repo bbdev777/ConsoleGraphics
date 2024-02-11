@@ -1,51 +1,30 @@
-#include <iostream>
-#include <signal.h>
-#include <memory.h>
-#include <atomic>
-#include <chrono>
-#include <thread>
 
-#include "Display.h"
+#include "ConsoleApp.h"
 #include "StarsModel.h"
 
-std::atomic_bool run = true;
-
-void SetSigTerm();
 void PutStarsToDisplay(ConsoleGraphics::Display &display, Stars::StarsModel &starModel);
-
-int AppCycle()
-{
-   	ConsoleGraphics::Display	display;
-	Stars::StarsModel 			starsModel;
-	double						baseStep = 1.0, k = 1.0;
-
-	while(run)
-    {
-		display.Resize();
-
-		std::chrono::time_point<std::chrono::system_clock>  startTime = std::chrono::system_clock::now();
-		starsModel.MoveStars(baseStep * k);
-
-		display.FillIn(' ');
-
-		PutStarsToDisplay(display, starsModel);
-        
-        display.RenderColored();
-        usleep(10 * 1000);
-		
-		std::chrono::time_point<std::chrono::system_clock>  endTime = std::chrono::system_clock::now();
-		std::chrono::duration<double> delta = endTime - startTime;
-
-		k = delta.count() / (1.0 / 60.0);
-	}
-
-	return 0;
-}
 
 int	main()
 {
-	SetSigTerm();
-	return AppCycle();
+	ConsoleGraphics::ConsoleApp	application;
+	Stars::StarsModel 			starsModel;
+	double						baseStep = 1.0;
+	double						textPos = (double)application.GetDisplay().GetWidth();
+	std::string					message = "Press Ctrl + C for exit...";
+
+	return application.Run([&](double k, ConsoleGraphics::Display& display)
+	{
+		starsModel.MoveStars(baseStep * k);
+
+		PutStarsToDisplay(display, starsModel);
+
+		display.SetStringAt(int(textPos), 1, message);
+
+		textPos -= 0.25;
+
+		if (textPos + message.size() < 0)
+			textPos = (double)application.GetDisplay().GetWidth();
+	});
 }
 
 Stars::StarDescription SetPerspective(const Stars::StarDescription &star)
@@ -81,20 +60,4 @@ void PutStarsToDisplay(ConsoleGraphics::Display &display, Stars::StarsModel &sta
 						  curStar.z,
 						  starModel);
 	}
-}
-
-void SetSigTerm()
-{
-	struct sigaction action;
-	memset(&action, 0, sizeof(action));
-
-	action.sa_handler = [](int signum)
-	{
-		run = false;
-	};
-
-	sigaction(SIGTERM, &action, NULL);
-
-	signal(SIGINT, action.sa_handler);
-	signal(SIGABRT, action.sa_handler);
 }
