@@ -37,8 +37,8 @@ void PutColumnsToDisplay(ConsoleGraphics::Display &display, MatrixColumns::Matri
     
     for (auto& column : columns)
     {
-        display.SetCharAt(column.x, column.y, column.firs, F_WHITE);
-        display.SetCharAt(column.x, column.y - 1, column.second, F_GREEN);
-        display.SetCharAt(column.x, column.y - column.length, column.terminal, F_BLACK);
+        display.SetCharAt(column.x, column.y, column.firs, F_WHITE, 0);
+        display.SetCharAt(column.x, column.y - 1, column.second, F_GREEN, 1);
+        display.SetCharAt(column.x, column.y - column.length, column.terminal, F_GREEN, 2);
     }
 }

@@ -44,6 +44,7 @@ namespace MatrixColumns
                 {
                     column.oldY = column.y;
                     column.second = column.firs;
+                    column.terminal = column.firs;//symbols[rand() % symbols.length() - 1];
                 }
 
                 if ((column.y  - column.length) > lowerBound)
@@ -65,7 +66,7 @@ namespace MatrixColumns
             column.x = rand() % rightBound;
             column.y = -(rand() % lowerBound);
             column.length = rand() % (lowerBound / 2) + 7;
-            column.terminal = ' ';
+            column.terminal = symbols[rand() % symbols.length() - 1];
             column.speed = std::max(0.05, double(rand() % 250) / 1000.0);
 
             return column;

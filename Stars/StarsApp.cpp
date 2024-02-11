@@ -66,6 +66,7 @@ void PutStarsToDisplay(ConsoleGraphics::Display &display, Stars::StarsModel &sta
 						  curStar.y + halfHeight,
 						  curStar.z,
 						  starModel,
-						  color);
+						  color,
+						  1);
 	}
 }

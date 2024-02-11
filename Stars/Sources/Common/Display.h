@@ -59,7 +59,7 @@ namespace ConsoleGraphics
             return size.ws_row;
         }
 
-        void    SetCharAt(int x, int y, char symbol, int color)
+        void    SetCharAt(int x, int y, char symbol, int color, int intensity)
         {
             if (IsOutOfScreen(x, y))
                 return;
@@ -67,9 +67,10 @@ namespace ConsoleGraphics
             int index = y * size.ws_col + x;    
             displayBuffer[index] = symbol;
             shadowBuffer[index].color = color;
+            shadowBuffer[index].intensity = intensity;
         }
 
-        void    SetCharAt(int x, int y, double z, char symbol, int color)
+        void    SetCharAt(int x, int y, double z, char symbol, int color, int intensity)
         {
             if (IsOutOfScreen(x, y))
                 return;
@@ -82,13 +83,14 @@ namespace ConsoleGraphics
              displayBuffer[index] = symbol;
              shadowBuffer[index].z = z;
              shadowBuffer[index].color = color;
+             shadowBuffer[index].intensity = intensity;
         }
 
         void    SetStringAt(int x, int y, const std::string& text, int color)
         {
             for (int i = 0, c = text.length(); i < c; i++)
             {
-                SetCharAt(x + i, y, text[i], color);
+                SetCharAt(x + i, y, text[i], color, 1);
             }
         }
 
@@ -109,8 +111,15 @@ namespace ConsoleGraphics
                 for (int j = 0; j < size.ws_col - 2; j++)
                 {
                     int index = i * size.ws_col + j;
+                    int intensity = A_NORMAL;
+
+                    if (shadowBuffer[index].intensity == 0)
+                        intensity = A_BOLD;
+                    else if (shadowBuffer[index].intensity == 2)
+                        intensity = A_DIM;
+                        
                     attron(COLOR_PAIR(shadowBuffer[index].color));
-                    mvaddch(i, j, displayBuffer[index]);
+                    mvaddch(i, j, displayBuffer[index] | intensity);
                 }
             }
 
@@ -158,6 +167,7 @@ namespace ConsoleGraphics
         {
             double  z = -99999.0;
             int     color = 0;
+            int     intensity = 1;
         };
 
         std::vector<ShadowBufferItem> shadowBuffer;
