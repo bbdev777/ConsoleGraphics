@@ -12,7 +12,7 @@
 namespace ConsoleGraphics
 {
     class Display
-    {
+    {        
     public:
         Display()
         {
@@ -37,41 +37,49 @@ namespace ConsoleGraphics
             return size.ws_row;
         }
 
-        void    SetCharAt(int x, int y, char c)
+        void    SetCharAt(int x, int y, char symbol, int color)
         {
             if (IsOutOfScreen(x, y))
                 return;
                 
-            displayBuffer[y * size.ws_col + x] = c;
+            int index = y * size.ws_col + x;    
+            displayBuffer[index] = symbol;
+            shadowBuffer[index].color = color;
         }
 
-        void    SetCharAt(int x, int y, double z, char c)
+        void    SetCharAt(int x, int y, double z, char symbol, int color)
         {
             if (IsOutOfScreen(x, y))
                 return;
                 
             int index = y * size.ws_col + x;
 
-            if (zBuffer[index] >= z)
+            if (shadowBuffer[index].z >= z)
                 return;
 
-             displayBuffer[index] = c;
-             zBuffer[index] = z;   
+             displayBuffer[index] = symbol;
+             shadowBuffer[index].z = z;
+             shadowBuffer[index].color = color;
         }
 
-        void    SetStringAt(int x, int y, const std::string& text)
+        void    SetStringAt(int x, int y, const std::string& text, int color)
         {
+            set_display_atrib(color);
+
             for (int i = 0, c = text.length(); i < c; i++)
             {
-                SetCharAt(x + i, y, text[i]);
+                SetCharAt(x + i, y, text[i], color);
             }
+
+            resetcolor();
         }
 
         void    FillIn(char symbol)
         {
-            for (size_t i = 0; i < displayBuffer.size(); i++)
+            for (size_t i = 0, c = displayBuffer.size(); i < c; i++)
             {
-                zBuffer[i] = -99999.0; 
+                shadowBuffer[i].z = -99999.0; 
+                shadowBuffer[i].color = 0;
                 displayBuffer[i] = symbol;
             }
         }
@@ -89,16 +97,10 @@ namespace ConsoleGraphics
         {
             gotoxy(0, 0);
             
-            for (auto& item : displayBuffer)
+            for (size_t i = 0, c = displayBuffer.size(); i < c; i++)
             {
-                if (item == '.')
-                    set_display_atrib(F_GREEN);
-                else if (item == '+')
-                    set_display_atrib(F_CYAN);
-                else
-                    set_display_atrib(F_WHITE);
-
-                fprintf(stdout, "%c", item);
+                set_display_atrib(shadowBuffer[i].color);
+                fprintf(stdout, "%c", displayBuffer[i]);
             }
 
             resetcolor();
@@ -118,8 +120,8 @@ namespace ConsoleGraphics
             displayBuffer.clear();
             displayBuffer.resize(size.ws_col * size.ws_row);
 
-            zBuffer.clear();
-            zBuffer.resize(displayBuffer.size());
+            shadowBuffer.clear();
+            shadowBuffer.resize(displayBuffer.size());
 
             clrscr();
             hide_cursor();
@@ -143,7 +145,13 @@ namespace ConsoleGraphics
             return false;
         }
 
-        std::vector<double> zBuffer;
+        struct ShadowBufferItem
+        {
+            double  z = -99999.0;
+            int     color = 0;
+        };
+
+        std::vector<ShadowBufferItem> shadowBuffer;
         std::vector<char> displayBuffer;
         
         winsize size;

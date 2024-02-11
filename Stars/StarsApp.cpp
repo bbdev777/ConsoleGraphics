@@ -18,7 +18,7 @@ int	main()
 
 		PutStarsToDisplay(display, starsModel);
 
-		display.SetStringAt(int(textPos), 1, message);
+		display.SetStringAt(int(textPos), 1, message, F_WHITE);
 
 		textPos -= 0.25;
 
@@ -48,16 +48,24 @@ void PutStarsToDisplay(ConsoleGraphics::Display &display, Stars::StarsModel &sta
 	for (auto &star : starList)
 	{
 		Stars::StarDescription curStar = SetPerspective(star);
-		char starModel = '.';
+		char	starModel = '.';
+		int		color = F_GREEN;		
 
 		if (curStar.z > distancePart * 3.0)
+		{
 			starModel = '*';
+			color = F_WHITE;
+		}
 		else if (curStar.z > (distancePart * 4.0))
+		{
 			starModel = '+';
+			color = F_CYAN;
+		}
 
 		display.SetCharAt(curStar.x + halfWidth,
 						  curStar.y + halfHeight,
 						  curStar.z,
-						  starModel);
+						  starModel,
+						  color);
 	}
 }
