@@ -7,10 +7,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "defines.h"
+#include <ncurses.h>
+
+#define F_WHITE     1
+#define F_CYAN      2
+#define F_GREEN     3
+#define F_BLACK     4
 
 namespace ConsoleGraphics
 {
+    struct  ScreenSize
+    {
+        int     ws_col;
+        int     ws_row;
+    };
+
     class Display
     {        
     public:
@@ -18,13 +29,24 @@ namespace ConsoleGraphics
         {
             size.ws_col = -1;
             size.ws_row = -1;
-            size.ws_xpixel = -1;
-            size.ws_ypixel = -1;
+
+            initscr();            
+	        start_color();
+
+            init_pair(F_WHITE, COLOR_WHITE, COLOR_BLACK);
+	        init_pair(F_CYAN, COLOR_CYAN, COLOR_BLACK);
+	        init_pair(F_GREEN, COLOR_GREEN, COLOR_BLACK);
+            init_pair(F_BLACK, COLOR_BLACK, COLOR_BLACK);
+
+	        curs_set(0);
+
+            Resize();
         }
 
         ~Display()
         {
-            show_cursor();
+            curs_set(1);
+            endwin();
         }
 
         int     GetWidth() const
@@ -64,14 +86,10 @@ namespace ConsoleGraphics
 
         void    SetStringAt(int x, int y, const std::string& text, int color)
         {
-            set_display_atrib(color);
-
             for (int i = 0, c = text.length(); i < c; i++)
             {
                 SetCharAt(x + i, y, text[i], color);
             }
-
-            resetcolor();
         }
 
         void    FillIn(char symbol)
@@ -86,43 +104,24 @@ namespace ConsoleGraphics
 
         void    Render()
         {
-            gotoxy(0, 0);
-
-            fwrite(displayBuffer.data(), displayBuffer.size(), 1, stdout);
-      
-            fflush(stdout);
-        }
-
-        void    RenderColored()
-        {
-            gotoxy(0, 0);
-
             for (int i = 0; i < size.ws_row - 1; i++)
             {
-                gotoxy(0, i);
-                for (int j = 0; j < size.ws_col - 1; j++)
+                for (int j = 0; j < size.ws_col - 2; j++)
                 {
                     int index = i * size.ws_col + j;
-                    set_display_atrib(shadowBuffer[index].color);
-                    fprintf(stdout, "%c", displayBuffer[index]);
+                    attron(COLOR_PAIR(shadowBuffer[index].color));
+                    mvaddch(i, j, displayBuffer[index]);
                 }
-            }    
-            /*
-            for (size_t i = 0, c = displayBuffer.size(); i < c; i++)
-            {
-                set_display_atrib(shadowBuffer[i].color);
-                fprintf(stdout, "%c", displayBuffer[i]);
             }
-        */
-            fflush(stdout);
-            resetcolor();
+
+            refresh(); 
         }
         
         void    Resize()
         {
-            winsize localSize;
+            ScreenSize localSize;
 
-            ioctl(STDOUT_FILENO, TIOCGWINSZ, &localSize); // Получение размеров консоли
+            getmaxyx(stdscr, localSize.ws_row, localSize.ws_col);
 
             if (memcmp(&localSize, &size, sizeof(winsize)) == 0)
                 return;
@@ -133,9 +132,6 @@ namespace ConsoleGraphics
 
             shadowBuffer.clear();
             shadowBuffer.resize(displayBuffer.size());
-
-            clrscr();
-            hide_cursor();
         }
 
     protected:
@@ -165,6 +161,6 @@ namespace ConsoleGraphics
         std::vector<ShadowBufferItem> shadowBuffer;
         std::vector<char> displayBuffer;
         
-        winsize size;
+        ScreenSize  size;
     };
 }

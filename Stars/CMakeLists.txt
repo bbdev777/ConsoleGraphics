@@ -26,6 +26,7 @@ target_include_directories(Stars PUBLIC
 )
 
 target_link_libraries(Stars
+    ncurses
 )
 ##############################################################################################
 
@@ -43,5 +44,6 @@ target_include_directories(MatrixColumns PUBLIC
 )
 
 target_link_libraries(MatrixColumns
+    ncurses
 )
 ##############################################################################################

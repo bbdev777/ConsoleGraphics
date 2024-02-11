@@ -12,9 +12,8 @@ int	main()
 	double						textPos = (double)application.GetDisplay().GetWidth();
 	std::string					message = "Press Ctrl + C for exit... ";
 
-    application.ClearScreen();
 
-    matrixColumnModel.SetBounds(application.GetDisplay().GetWidth(), application.GetDisplay().GetWidth());
+    matrixColumnModel.SetBounds(application.GetDisplay().GetWidth(), application.GetDisplay().GetHeight());
 
 	return application.Run([&](double k, ConsoleGraphics::Display& display)
 	{

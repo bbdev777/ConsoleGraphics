@@ -8,13 +8,15 @@ namespace MatrixColumns
 {
     struct ColumnDescription
     {
-        char firs = '*';
-        char second = '#';
-        char terminal = ' ';
+        char    firs = '*';
+        char    second = '#';
+        char    terminal = ' ';
 
-        double x = 0.0;
-        double y = -1.0;
-        int length = 5;
+        double  x = 0.0;
+        double  y = -1.0;
+        double  oldY = 0.0;
+        double  speed = 0.25;
+        int     length = 5;
     };
 
     class MatrixColumnsModel
@@ -34,11 +36,16 @@ namespace MatrixColumns
         {
             for (auto& column : columns)
             {
-                column.second = column.firs;
                 column.firs = symbols[rand() % symbols.length() - 1];
-                column.y += 0.25;
+                column.y += column.speed;
 
-                if (column.y - column.length > lowerBound)
+                if (column.y - column.oldY >= 1.0)
+                {
+                    column.oldY = column.y;
+                    column.second = column.firs;
+                }
+
+                if ((column.y  - column.length) > lowerBound)
                 {
                     column = GenerateColumn();
                 }
@@ -55,9 +62,10 @@ namespace MatrixColumns
         {
             MatrixColumns::ColumnDescription   column;
             column.x = rand() % rightBound;
-            column.y = - rand() % (lowerBound / 4);
-            column.length = rand() % (lowerBound / 3) + 3;
+            column.y = -(rand() % lowerBound);
+            column.length = rand() % (lowerBound / 2) + 7;
             column.terminal = ' ';
+            column.speed = std::max(0.05, double(rand() % 250) / 1000.0);
 
             return column;
         }
@@ -76,7 +84,7 @@ namespace MatrixColumns
 
         int             rightBound = 0; 
         int             lowerBound = 0;
-        std::string    symbols = "1234567890qwertyuiopasdfghjklzxcvbnm";
+        std::string    symbols = "!@#$%^&*()_+QWERTYUIOP{}ASDFGHJKLqwertyuiopasdfghjklzxcvbnm:|ZXCVBNM<>1234567890";
         std::vector<ColumnDescription> columns;
     };
 }
