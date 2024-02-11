@@ -8,9 +8,8 @@ int	main()
 {
 	ConsoleGraphics::ConsoleApp         application;
     MatrixColumns::MatrixColumnsModel   matrixColumnModel;
-	//double						baseStep = 0.15;
-	double						textPos = (double)application.GetDisplay().GetWidth();
-	std::string					message = "Press Ctrl + C for exit... ";
+	double						        textPos = (double)application.GetDisplay().GetWidth();
+	std::string					        message = "Press Ctrl + C for exit... ";
 
 
     matrixColumnModel.SetBounds(application.GetDisplay().GetWidth(), application.GetDisplay().GetHeight());
@@ -21,7 +20,7 @@ int	main()
 
         PutColumnsToDisplay(display, matrixColumnModel);
 
-		//display.SetStringAt(int(textPos), 1, message, F_WHITE);
+		display.SetStringAt(int(textPos), 1, message, F_WHITE);
 
 		textPos -= 0.25;
 
