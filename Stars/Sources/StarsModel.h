@@ -2,7 +2,7 @@
 #pragma once
 
 #include <math.h>
-#include <list>
+#include <vector>
 #include <random>
 
 namespace Stars

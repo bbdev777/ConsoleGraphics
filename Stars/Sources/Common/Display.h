@@ -95,16 +95,27 @@ namespace ConsoleGraphics
 
         void    RenderColored()
         {
-            gotoxy(0, 0);
-            
+            gotoxy(1, 1);
+
+            for (int i = 0; i < size.ws_row - 1; i++)
+            {
+                gotoxy(1, i + 1);
+                for (int j = 0; j < size.ws_col - 1; j++)
+                {
+                    int index = i * size.ws_col + j;
+                    set_display_atrib(shadowBuffer[index].color);
+                    fprintf(stdout, "%c", displayBuffer[index]);
+                }
+            }    
+            /*
             for (size_t i = 0, c = displayBuffer.size(); i < c; i++)
             {
                 set_display_atrib(shadowBuffer[i].color);
                 fprintf(stdout, "%c", displayBuffer[i]);
             }
-
-            resetcolor();
+        */
             fflush(stdout);
+            resetcolor();
         }
         
         void    Resize()
@@ -130,16 +141,16 @@ namespace ConsoleGraphics
     protected:
         bool    IsOutOfScreen(int x, int y)
         {
-            if (x <= 0)
+            if (x < 1)
                 return true;
 
-            if (y <= 0)
+            if (y < 1)
                 return  true;
 
-            if (y >= size.ws_row)
+            if (y >= size.ws_row - 1)
                 return  true;
 
-            if (x >= size.ws_col)
+            if (x >= size.ws_col - 1)
                 return true;
 
             return false;

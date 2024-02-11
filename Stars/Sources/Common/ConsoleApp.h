@@ -26,7 +26,15 @@ namespace ConsoleGraphics
             display.Resize();
         }
 
-        int Run(std::function<void(double interFrameCoefficient, ConsoleGraphics::Display& display)> onFrame)
+        void    ClearScreen()
+        {
+            display.Resize();
+            display.FillIn(' ');
+        }
+
+        int Run(std::function<void(double interFrameCoefficient, ConsoleGraphics::Display& display)> onFrame, 
+                int delayMs = 10, 
+                bool clearScreen = true)
         {
             double k = 1.0;
 
@@ -37,12 +45,14 @@ namespace ConsoleGraphics
 		        hide_cursor();
                 
                 std::chrono::time_point<std::chrono::system_clock> startTime = std::chrono::system_clock::now();
-                display.FillIn(' ');
+
+                if (clearScreen)
+                    display.FillIn(' ');
 
                 onFrame(k, display);
 
                 display.RenderColored();
-                usleep(10 * 1000);
+                usleep(delayMs * 1000);
                 std::chrono::time_point<std::chrono::system_clock> endTime = std::chrono::system_clock::now();
                 std::chrono::duration<double> delta = endTime - startTime;
 

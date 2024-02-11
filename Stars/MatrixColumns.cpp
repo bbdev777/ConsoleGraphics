@@ -1,20 +1,47 @@
+
 #include "ConsoleApp.h"
-//#include "StarsModel.h"
+#include "MatrixColumnsModel.h"
+
+void PutColumnsToDisplay(ConsoleGraphics::Display &display, MatrixColumns::MatrixColumnsModel &model);
 
 int	main()
 {
-	ConsoleGraphics::ConsoleApp	application;
-	double						baseStep = 1.0;
+	ConsoleGraphics::ConsoleApp         application;
+    MatrixColumns::MatrixColumnsModel   matrixColumnModel;
+	//double						baseStep = 0.15;
 	double						textPos = (double)application.GetDisplay().GetWidth();
-	std::string					message = "Press Ctrl + C for exit...";
+	std::string					message = "Press Ctrl + C for exit... ";
+
+    application.ClearScreen();
+
+    matrixColumnModel.SetBounds(application.GetDisplay().GetWidth(), application.GetDisplay().GetWidth());
 
 	return application.Run([&](double k, ConsoleGraphics::Display& display)
 	{
-		display.SetStringAt(int(textPos), 1, message, F_WHITE);
+        matrixColumnModel.Animate();
+
+        PutColumnsToDisplay(display, matrixColumnModel);
+
+		//display.SetStringAt(int(textPos), 1, message, F_WHITE);
 
 		textPos -= 0.25;
 
 		if (textPos + message.size() < 0)
 			textPos = (double)application.GetDisplay().GetWidth();
-	});
+	},
+    10,
+    false);
+}
+
+void PutColumnsToDisplay(ConsoleGraphics::Display &display, MatrixColumns::MatrixColumnsModel &model)
+{
+    auto&   columns = model.GetColumns();
+    
+    for (auto& column : columns)
+    {
+        display.SetCharAt(column.x, column.y, column.firs, F_WHITE);
+        display.SetCharAt(column.x, column.y - 1, column.second, F_GREEN);
+        display.SetCharAt(column.x, column.y - column.length, column.terminal, F_BLACK);
+    }
+
 }
