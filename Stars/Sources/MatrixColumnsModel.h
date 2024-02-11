@@ -40,8 +40,7 @@ namespace MatrixColumns
 
                 if (column.y - column.length > lowerBound)
                 {
-                    column.x = rand() % rightBound;
-                    column.y = -rand() % lowerBound;
+                    column = GenerateColumn();
                 }
             }
         }
@@ -56,8 +55,8 @@ namespace MatrixColumns
         {
             MatrixColumns::ColumnDescription   column;
             column.x = rand() % rightBound;
-            column.y = - rand() % lowerBound;
-            column.length = rand() % (lowerBound / 2) + 3;
+            column.y = - rand() % (lowerBound / 4);
+            column.length = rand() % (lowerBound / 3) + 3;
             column.terminal = ' ';
 
             return column;

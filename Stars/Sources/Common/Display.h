@@ -95,11 +95,11 @@ namespace ConsoleGraphics
 
         void    RenderColored()
         {
-            gotoxy(1, 1);
+            gotoxy(0, 0);
 
             for (int i = 0; i < size.ws_row - 1; i++)
             {
-                gotoxy(1, i + 1);
+                gotoxy(0, i);
                 for (int j = 0; j < size.ws_col - 1; j++)
                 {
                     int index = i * size.ws_col + j;
