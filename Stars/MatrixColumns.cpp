@@ -41,5 +41,4 @@ void PutColumnsToDisplay(ConsoleGraphics::Display &display, MatrixColumns::Matri
         display.SetCharAt(column.x, column.y - 1, column.second, F_GREEN);
         display.SetCharAt(column.x, column.y - column.length, column.terminal, F_BLACK);
     }
-
 }
