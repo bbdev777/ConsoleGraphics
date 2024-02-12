@@ -14,5 +14,5 @@ make -j1
 
 end=$(date +%s)
 
-echo Build tme was  $(($end-$start)) seconds.
+echo Build time was  $(($end-$start)) seconds.
 
