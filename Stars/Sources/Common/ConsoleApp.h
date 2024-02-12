@@ -60,7 +60,7 @@ namespace ConsoleGraphics
             RemoveSigTerm(terminationId);
         }
 
-        const ConsoleGraphics::Display GetDisplay() const
+        const ConsoleGraphics::Display& GetDisplay() const
         {
             return display;
         }
