@@ -23,7 +23,7 @@ namespace ConsoleGraphics
     };
 
     class Display
-    {        
+    {            
     public:
         Display()
         {
@@ -143,6 +143,14 @@ namespace ConsoleGraphics
             shadowBuffer.resize(displayBuffer.size());
 
             FillIn(' ');
+
+            if (onScreenSizeChanged)
+                onScreenSizeChanged(size.ws_col, size.ws_row);
+        }
+
+        void    SetOnScreenSizeChanged(std::function<void(int width, int height)> callback) const
+        {
+            onScreenSizeChanged = callback;
         }
 
     protected:
@@ -172,7 +180,8 @@ namespace ConsoleGraphics
 
         std::vector<ShadowBufferItem> shadowBuffer;
         std::vector<char> displayBuffer;
-        
+        mutable std::function<void(int, int)>    onScreenSizeChanged;  
+
         ScreenSize  size;
     };
 }

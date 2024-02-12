@@ -4,18 +4,22 @@
 
 void PutColumnsToDisplay(ConsoleGraphics::Display &display, MatrixColumns::MatrixColumnsModel &model);
 
-int	main()
+int main()
 {
-	ConsoleGraphics::ConsoleApp         application;
-    MatrixColumns::MatrixColumnsModel   matrixColumnModel;
-	double						        textPos = (double)application.GetDisplay().GetWidth();
-	std::string					        message = "Press Ctrl + C for exit...";
-
+    ConsoleGraphics::ConsoleApp application;
+    MatrixColumns::MatrixColumnsModel matrixColumnModel;
+    double textPos = (double)application.GetDisplay().GetWidth();
+    std::string message = "Press Ctrl + C for exit...";
 
     matrixColumnModel.SetBounds(application.GetDisplay().GetWidth(), application.GetDisplay().GetHeight());
 
-	return application.Run([&](double k, ConsoleGraphics::Display& display)
-	{
+    application.GetDisplay().SetOnScreenSizeChanged([&](int width, int height)
+    {
+        matrixColumnModel.SetBounds(width, height); 
+    });
+
+    return application.Run([&](double k, ConsoleGraphics::Display &display)
+                           {
         matrixColumnModel.Animate();
 
         PutColumnsToDisplay(display, matrixColumnModel);
@@ -25,17 +29,16 @@ int	main()
 		//textPos -= 0.25;
 
 		if (textPos + message.size() < 0)
-			textPos = (double)application.GetDisplay().GetWidth();
-	},
-    10,
-    false);
+			textPos = (double)application.GetDisplay().GetWidth(); },
+                           10,
+                           false);
 }
 
 void PutColumnsToDisplay(ConsoleGraphics::Display &display, MatrixColumns::MatrixColumnsModel &model)
 {
-    auto&   columns = model.GetColumns();
-    
-    for (auto& column : columns)
+    auto &columns = model.GetColumns();
+
+    for (auto &column : columns)
     {
         display.SetCharAt(column.x, column.y, column.first, F_WHITE, 0);
         display.SetCharAt(column.x, column.y - 1, column.second, F_GREEN, 1);
