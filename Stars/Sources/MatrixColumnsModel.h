@@ -8,7 +8,7 @@ namespace MatrixColumns
 {
     struct ColumnDescription
     {
-        char    firs = '*';
+        char    first = '*';
         char    second = '#';
         char    terminal = ' ';
 
@@ -17,6 +17,8 @@ namespace MatrixColumns
         double  oldY = 0.0;
         double  speed = 0.25;
         int     length = 5;
+
+        bool    isBlack = false;
     };
 
     class MatrixColumnsModel
@@ -37,14 +39,14 @@ namespace MatrixColumns
         {
             for (auto& column : columns)
             {
-                column.firs = symbols[rand() % symbols.length() - 1];
+                column.first = column.isBlack ? ' ' : symbols[rand() % symbols.length() - 1];
                 column.y += column.speed;
 
                 if (column.y - column.oldY >= 1.0)
                 {
                     column.oldY = column.y;
-                    column.second = column.firs;
-                    column.terminal = column.firs;//symbols[rand() % symbols.length() - 1];
+                    column.second = column.first;
+                    column.terminal = column.first;//symbols[rand() % symbols.length() - 1];
                 }
 
                 if ((column.y  - column.length) > lowerBound)
@@ -60,6 +62,7 @@ namespace MatrixColumns
         }
 
     protected:
+        int     entryNumber = 0;
         MatrixColumns::ColumnDescription   GenerateColumn()
         {
             MatrixColumns::ColumnDescription   column;
@@ -68,6 +71,9 @@ namespace MatrixColumns
             column.length = rand() % (lowerBound / 2) + 7;
             column.terminal = symbols[rand() % symbols.length() - 1];
             column.speed = std::max(0.05, double(rand() % 250) / 1000.0);
+            //column.isBlack = entryNumber % 3 == 0;
+
+            entryNumber++;
 
             return column;
         }
@@ -76,7 +82,7 @@ namespace MatrixColumns
         {
             columns.clear();
             
-            int     maxColumn = rightBound / 2; 
+            int     maxColumn = rightBound;// / 2; 
             
             for (int i = 0; i < maxColumn; i++)
             {

@@ -9,7 +9,7 @@ int	main()
 	ConsoleGraphics::ConsoleApp         application;
     MatrixColumns::MatrixColumnsModel   matrixColumnModel;
 	double						        textPos = (double)application.GetDisplay().GetWidth();
-	std::string					        message = "Press Ctrl + C for exit... ";
+	std::string					        message = "Press Ctrl + C for exit...";
 
 
     matrixColumnModel.SetBounds(application.GetDisplay().GetWidth(), application.GetDisplay().GetHeight());
@@ -20,9 +20,9 @@ int	main()
 
         PutColumnsToDisplay(display, matrixColumnModel);
 
-		display.SetStringAt(int(textPos), 0, message, F_WHITE);
+		display.SetStringAt(0, 0, message, F_WHITE);
 
-		textPos -= 0.25;
+		//textPos -= 0.25;
 
 		if (textPos + message.size() < 0)
 			textPos = (double)application.GetDisplay().GetWidth();
@@ -37,7 +37,7 @@ void PutColumnsToDisplay(ConsoleGraphics::Display &display, MatrixColumns::Matri
     
     for (auto& column : columns)
     {
-        display.SetCharAt(column.x, column.y, column.firs, F_WHITE, 0);
+        display.SetCharAt(column.x, column.y, column.first, F_WHITE, 0);
         display.SetCharAt(column.x, column.y - 1, column.second, F_GREEN, 1);
         display.SetCharAt(column.x, column.y - column.length, column.terminal, F_GREEN, 2);
     }

@@ -111,7 +111,7 @@ namespace ConsoleGraphics
                 for (int j = 0; j < size.ws_col; j++)
                 {
                     int index = i * size.ws_col + j;
-                    int intensity = A_NORMAL;
+                    int intensity = A_BOLD;
 
                     if (shadowBuffer[index].intensity == 0)
                         intensity = A_BOLD;
