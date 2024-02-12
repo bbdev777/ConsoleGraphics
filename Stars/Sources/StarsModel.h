@@ -30,7 +30,7 @@ namespace Stars
 
                 if(item.z >= 0.0)
                 {
-                    item = RandomizeSC(defaultZ);
+                    item = Randomize(defaultZ);
                     item.z = defaultZ;
                 }
             }
@@ -50,7 +50,7 @@ namespace Stars
         {
             for (int i = 0; i < 250; i++)
             {               
-                starList.push_back(RandomizeSC(defaultZ));
+                starList.push_back(Randomize(defaultZ));
             }
         }
 
@@ -60,7 +60,7 @@ namespace Stars
             return x * (3.14159 / 180.0);
         }
 
-        StarDescription RandomizeSC(double defaultZ)
+        StarDescription Randomize(double defaultZ)
         {
             std::uniform_int_distribution<int> distribution(750, 6000);
             int radiusX = distribution(generator);
