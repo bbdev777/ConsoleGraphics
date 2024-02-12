@@ -48,24 +48,24 @@ void PutStarsToDisplay(ConsoleGraphics::Display &display, Stars::StarsModel &sta
 	for (auto &star : starList)
 	{
 		Stars::StarDescription curStar = SetPerspective(star);
-		char	starModel = '.';
+		char	starShape = '.';
 		int		color = F_GREEN;		
 
 		if (curStar.z > distancePart * 3.0)
 		{
-			starModel = '*';
+			starShape = '*';
 			color = F_WHITE;
 		}
 		else if (curStar.z > (distancePart * 4.0))
 		{
-			starModel = '+';
+			starShape = '+';
 			color = F_CYAN;
 		}
 
 		display.SetCharAt(curStar.x + halfWidth,
 						  curStar.y + halfHeight,
 						  curStar.z,
-						  starModel,
+						  starShape,
 						  color,
 						  1);
 	}
