@@ -92,8 +92,7 @@ namespace Flame
         void SpreadData()
         {
             int bufferSize = buffers[fromBufferNum].size();
-                int offset = round(sin(iterationCount) * 2.0);
-                iterationCount++;
+
             for (int i = 0; i < lowerBound; i++)
             {
                 for (int j = 0; j < rightBound; j++)
@@ -151,7 +150,7 @@ namespace Flame
                         count ++;
                     }
 
-                    count += 4 + offset;
+                    count += 4;
                     sum = (int)(round(sum / count));
 
                     if (index3 >= 0 && index3 < bufferSize)
