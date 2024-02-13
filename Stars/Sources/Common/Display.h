@@ -38,9 +38,9 @@ namespace ConsoleGraphics
 	        start_color();
 
             init_color(COLOR_RED, 1000, 0, 0);
-            init_color(COLOR_GREEN, 0, 1000, 0);
+            init_color(COLOR_GREEN, 0, 850, 500);
             init_color(COLOR_BLUE, 0, 0, 1000);
-            init_color(COLOR_YELLOW, 1000, 1000, 0);
+            init_color(COLOR_YELLOW, 850, 1000, 0);
             init_color(COLOR_CYAN, 0, 1000, 1000);
             init_color(COLOR_MAGENTA, 1000, 500, 0);
 
@@ -142,9 +142,11 @@ namespace ConsoleGraphics
                         intensity = A_BOLD;
                     else if (shadowBuffer[index].intensity == 2)
                         intensity = A_DIM;
+                    else if (shadowBuffer[index].intensity == 3)
+                        intensity = A_STANDOUT;
                         
                     attron(COLOR_PAIR(shadowBuffer[index].color));
-                    mvaddch(i, j, displayBuffer[index] | intensity | A_STANDOUT);
+                    mvaddch(i, j, displayBuffer[index] | intensity);
                 }
             }
 

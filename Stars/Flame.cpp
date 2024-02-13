@@ -11,7 +11,7 @@ void PutFlameToDisplay(ConsoleGraphics::Display &display, const Flame::FlaneMode
 
     for (size_t i = 0, c = data.size(); i < c; i++)
     {
-        display.SetCharAt(i, ' ', palette[data[i]], 0);
+        display.SetCharAt(i, ' ', palette[data[i]], 3);
     }
 }
 
@@ -33,7 +33,7 @@ int main()
 
         PutFlameToDisplay(display, flameModel);
     },    
-    20,
+    25,
     false);
 }
 
