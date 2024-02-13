@@ -13,6 +13,10 @@
 #define F_CYAN      2
 #define F_GREEN     3
 #define F_BLACK     4
+#define F_RED       5
+#define F_BLUE      6
+#define F_YELLOW    7
+#define F_ORANGE    8
 
 namespace ConsoleGraphics
 {
@@ -33,10 +37,21 @@ namespace ConsoleGraphics
             initscr();            
 	        start_color();
 
+            init_color(COLOR_RED, 1000, 0, 0);
+            init_color(COLOR_GREEN, 0, 1000, 0);
+            init_color(COLOR_BLUE, 0, 0, 1000);
+            init_color(COLOR_YELLOW, 1000, 1000, 0);
+            init_color(COLOR_CYAN, 0, 1000, 1000);
+            init_color(COLOR_MAGENTA, 1000, 500, 0);
+
             init_pair(F_WHITE, COLOR_WHITE, COLOR_BLACK);
 	        init_pair(F_CYAN, COLOR_CYAN, COLOR_BLACK);
 	        init_pair(F_GREEN, COLOR_GREEN, COLOR_BLACK);
             init_pair(F_BLACK, COLOR_BLACK, COLOR_BLACK);
+            init_pair(F_RED, COLOR_RED, COLOR_BLACK);
+            init_pair(F_BLUE, COLOR_BLUE, COLOR_BLACK);
+            init_pair(F_YELLOW, COLOR_YELLOW, COLOR_BLACK);
+            init_pair(F_ORANGE, COLOR_MAGENTA, COLOR_BLACK);
 
 	        curs_set(0);
 
@@ -57,6 +72,16 @@ namespace ConsoleGraphics
         int     GetHeight() const
         {
             return size.ws_row;
+        }
+
+        void    SetCharAt(size_t index, char symbol, int color, int intensity)
+        {
+            if (index >= displayBuffer.size())
+                return;
+
+            displayBuffer[index] = symbol;
+            shadowBuffer[index].color = color;
+            shadowBuffer[index].intensity = intensity;
         }
 
         void    SetCharAt(int x, int y, char symbol, int color, int intensity)
@@ -111,15 +136,15 @@ namespace ConsoleGraphics
                 for (int j = 0; j < size.ws_col; j++)
                 {
                     int index = i * size.ws_col + j;
-                    int intensity = A_BOLD;
+                    int intensity = A_NORMAL;
 
-                    if (shadowBuffer[index].intensity == 0)
+                    if (shadowBuffer[index].intensity == 1)
                         intensity = A_BOLD;
                     else if (shadowBuffer[index].intensity == 2)
                         intensity = A_DIM;
                         
                     attron(COLOR_PAIR(shadowBuffer[index].color));
-                    mvaddch(i, j, displayBuffer[index] | intensity);
+                    mvaddch(i, j, displayBuffer[index] | intensity | A_STANDOUT);
                 }
             }
 

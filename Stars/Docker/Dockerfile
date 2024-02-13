@@ -20,9 +20,11 @@ RUN --mount=type=bind,source=.,target=/src/ConsoleGraphics \
     && ninja clean \
     && ninja -j4 \
     && cp -r /build-folder/Stars /Stars \
-    && cp -r /build-folder/MatrixColumns /MatrixColumns
+    && cp -r /build-folder/MatrixColumns /MatrixColumns \
+    && cp -r /build-folder/Flame /Flame
 
 FROM 10.74.33.15:5000/ubuntu-20.04-rel-image:1.0.1 AS Release
 
 COPY --from=build /Stars /Stars
 COPY --from=build /MatrixColumns /MatrixColumns
+COPY --from=build /Flame /Flame

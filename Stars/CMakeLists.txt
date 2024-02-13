@@ -16,7 +16,7 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -pipe -Wall -fPIC -Werror=retur
 # Stars
 ##############################################################################################
 add_executable(Stars 
-    StarsApp.cpp
+    Stars.cpp
     Sources/Common/ConsoleApp.cpp
 )
 
@@ -44,6 +44,24 @@ target_include_directories(MatrixColumns PUBLIC
 )
 
 target_link_libraries(MatrixColumns
+    ncurses
+)
+##############################################################################################
+
+##############################################################################################
+# MatrixColumns
+##############################################################################################
+add_executable(Flame 
+    Flame.cpp
+    Sources/Common/ConsoleApp.cpp
+)
+
+target_include_directories(Flame PUBLIC
+    Sources/
+    Sources/Common/
+)
+
+target_link_libraries(Flame
     ncurses
 )
 ##############################################################################################
