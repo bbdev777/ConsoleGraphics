@@ -33,6 +33,8 @@ namespace Flame
             this->rightBound = rightBound;
             this->lowerBound = lowerBound;
 
+            kernel = LoadKernel();
+
             int size = rightBound * lowerBound;
 
             buffers[0].resize(size);
@@ -59,8 +61,8 @@ namespace Flame
             for (int i = 0; i < rightBound / 6; i++)
             {
                 int     offset = rand() % rightBound;
-                int     w = rand() % 6;
-                int     h = rand() % 10;
+                int     w = rand() % 5 + rightBound / 70;
+                int     h = rand() % 10 + lowerBound / 35;
                 PutFlameBasement(offset - w / 2, lowerBound - h, w, h);
             }
 
@@ -89,7 +91,33 @@ namespace Flame
             }
         }
 
-        void SpreadData()
+        struct KernelItem
+        {
+            int x = 0;
+            int y = 0;
+        };
+
+        std::vector<KernelItem>     kernel;
+
+        std::vector<KernelItem>    LoadKernel()
+        {
+            std::vector<KernelItem> temp = {
+                { 0,  0},
+                {-1,  0},
+                { 1,  0},
+
+                { 1, -1},
+                {-1, -1},
+
+                //{ 0, -4},
+                { 0, -3},
+                { 0, -2}
+            };
+
+            return temp;
+        }
+
+        void    SpreadData()
         {
             int bufferSize = buffers[fromBufferNum].size();
 
@@ -97,64 +125,26 @@ namespace Flame
             {
                 for (int j = 0; j < rightBound; j++)
                 {
-                    int index0 = i * rightBound + j;
-                    int index1 = i * rightBound + j - 1;
-                    int index2 = i * rightBound + j + 1;
-                    int index3 = (i - 3) * rightBound + j;
-                    int index4 = (i - 1) * rightBound + j - 1;
-                    int index5 = (i - 1) * rightBound + j + 1;
-                                       
-                    int index6 = (i - 2) * rightBound + j;
                     double sum = 0.0;
                     double count = 0.0;
 
-                    if (index0 >= 0 && index0 < bufferSize)
+                    for (int k = 0, c = kernel.size(); k < c; k++)
                     {
-                        sum += buffers[fromBufferNum][index0];
-                        count ++;
-                    }
+                        int index = (i + kernel[k].y) * rightBound + (j + kernel[k].x);
+                        
+                        if (index >= 0 && index < bufferSize)
+                        {
+                            sum += buffers[fromBufferNum][index];
+                            count ++;
+                        }
+                    }                 
 
-                    if (index1 >= 0 && index1 < bufferSize)
-                    {
-                        sum += buffers[fromBufferNum][index1];
-                        count ++;
-                    }
-
-                    if (index2 >= 0 && index2 < bufferSize)
-                    {
-                        sum += buffers[fromBufferNum][index2];
-                        count ++;
-                    }
-
-                    if (index3 >= 0 && index3 < bufferSize)
-                    {
-                        sum += buffers[fromBufferNum][index3];
-                        count ++;
-                    }
-
-                    if (index4 >= 0 && index4 < bufferSize)
-                    {
-                        sum += buffers[fromBufferNum][index4];
-                        count ++;
-                    }
-
-                    if (index5 >= 0 && index5 < bufferSize)
-                    {
-                        sum += buffers[fromBufferNum][index5];
-                        count ++;
-                    }
-
-                    if (index6 >= 0 && index6 < bufferSize)
-                    {
-                        sum += buffers[fromBufferNum][index6];
-                        count ++;
-                    }
-
-                    count += 4;
+                    count += 5;
                     sum = (int)(round(sum / count));
 
-                    if (index3 >= 0 && index3 < bufferSize)
-                        buffers[toBufferNum][index3] = sum;
+                    int index = (i - 3) * rightBound + j;
+                    if (index >= 0 && index < bufferSize)
+                        buffers[toBufferNum][index] = sum;
                 }
             }
         }
