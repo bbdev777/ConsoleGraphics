@@ -7,11 +7,11 @@ void PutFlameToDisplay(ConsoleGraphics::Display &display, const Flame::FlaneMode
 {
     auto&   data = model.GetData();
     int     palette[] = {F_BLACK, F_ORANGE, F_RED, F_RED, F_RED, F_YELLOW, F_YELLOW, F_YELLOW, F_WHITE, F_WHITE, F_WHITE, F_WHITE};
-    //int     offset = display.GetWidth() * 3;
+    int     offset = display.GetWidth() * 3;
 
-    for (size_t i = 0, c = data.size(); i < c; i++)
+    for (size_t i = 0, c = data.size(); i < c - offset; i++)
     {
-        display.SetCharAt(i, ' ', palette[data[i]], 3);
+        display.SetCharAt(i + offset, ' ', palette[data[i]], 3);
     }
 }
 
@@ -33,7 +33,7 @@ int main()
 
         PutFlameToDisplay(display, flameModel);
     },    
-    25,
+    20,
     false);
 }
 
