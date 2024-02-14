@@ -13,7 +13,7 @@ namespace Blur
         {
         }
 
-        void SetBounds(int rightBound, int lowerBound)
+        virtual void SetBounds(int rightBound, int lowerBound)
         {
             this->rightBound = rightBound;
             this->lowerBound = lowerBound - blurDirection;

@@ -30,7 +30,7 @@ namespace Blur
             }
             
 
-            PutFireball((int)round(x), (int)round(y) + (sin(iterationCount) * 2.0), 6, 3);
+            PutFireball((int)round(x), (int)round(y)/* + (sin(iterationCount) * 2.0)*/, 6, 3);
 
             SpreadData();
 
