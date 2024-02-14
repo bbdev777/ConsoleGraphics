@@ -1,10 +1,10 @@
 
 #include "ConsoleApp.h"
-#include "FlameModel.h"
+#include "FireballModel.h"
 
 
-void PutFlameToDisplay(ConsoleGraphics::Display &display, const Blur::FlameModel &model)
-{
+ void PutModelToDisplay(ConsoleGraphics::Display &display, const Blur::FireballModel &model)
+ {
     auto&   data = model.GetData();
     int     palette[] = {F_BLACK, F_ORANGE, F_RED, F_RED, F_RED, F_YELLOW, F_YELLOW, F_YELLOW, F_WHITE, F_WHITE, F_WHITE, F_WHITE};
 
@@ -12,25 +12,25 @@ void PutFlameToDisplay(ConsoleGraphics::Display &display, const Blur::FlameModel
     {
         display.SetCharAt(i, ' ', palette[data[i]], 3);
     }
-}
+ }
 
 int main()
 {
     ConsoleGraphics::ConsoleApp application;
-    Blur::FlameModel   flameModel;
+    Blur::FireballModel   fireballModel;
 
-    flameModel.SetBounds(application.GetDisplay().GetWidth(), application.GetDisplay().GetHeight());
+    fireballModel.SetBounds(application.GetDisplay().GetWidth(), application.GetDisplay().GetHeight());
 
     application.GetDisplay().SetOnScreenSizeChanged([&](int width, int height)
     {
-         flameModel.SetBounds(width, height); 
+         fireballModel.SetBounds(width, height); 
     });
 
     return application.Run([&](double k, ConsoleGraphics::Display &display)
     {
-        flameModel.Animate();
+        fireballModel.Animate();
 
-        PutFlameToDisplay(display, flameModel);
+       PutModelToDisplay(display, fireballModel);
     },    
     20,
     false);

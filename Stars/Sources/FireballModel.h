@@ -4,17 +4,17 @@
 #include <vector>
 #include <random>
 
-#include "BlurModel.h"
+#include "FlameModel.h"
 
 namespace Blur
 {
-    class FlameModel : public BlurModel
+    class FireballModel : public BlurModel
     {
     public:
-        FlameModel()
+        FireballModel()
         {
-            blurDirection = -3;
-            blurCoefficient = 6;
+            blurDirection = 0;
+            blurCoefficient = 5;
         }
 
         void Animate() final
@@ -29,22 +29,25 @@ namespace Blur
                buffers[toBufferNum][i] = 0;
             }
             
-            for (int i = 0; i < rightBound / 6; i++)
-            {
-                int     offset = rand() % rightBound;
-                int     w = rand() % 5 + rightBound / 70;
-                int     h = rand() % 10 + lowerBound / 35;
-                PutFlameBasement(offset - w / 2, lowerBound - h, w, h);
-            }
+
+            PutFireball((int)round(x), (int)round(y) + (sin(iterationCount) * 2.0), 6, 3);
 
             SpreadData();
+
+            x += 6.0;
+
+            if (x > rightBound)
+                x = 0.0;
 
             iterationCount++;
         }
 
     protected:
 
-        void PutFlameBasement(int x, int y, int w, int h)
+        double      x = 10.0;
+        double      y = 10.0;
+
+        void PutFireball(int x, int y, int w, int h)
         {
             int bufferSize = buffers[fromBufferNum].size();
 
