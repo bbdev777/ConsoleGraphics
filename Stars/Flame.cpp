@@ -3,16 +3,31 @@
 #include "FlameModel.h"
 
 
-void PutFlameToDisplay(ConsoleGraphics::Display &display, const Blur::FlameModel &model)
-{
-    auto&   data = model.GetData();
-    int     palette[] = {F_BLACK, F_ORANGE, F_RED, F_RED, F_RED, F_YELLOW, F_YELLOW, F_YELLOW, F_WHITE, F_WHITE, F_WHITE, F_WHITE};
+int     palette[] = {F_BLACK, F_ORANGE, F_RED, F_RED, F_RED, F_YELLOW, F_YELLOW, F_YELLOW, F_WHITE, F_WHITE, F_WHITE, F_WHITE};
 
-    for (size_t i = 0, c = data.size(); i < c; i++)
+struct KernelOffsets
+{
+    int     x = 0;
+    int     y = 0;
+};
+
+std::vector<KernelOffsets>  kernel
+{
     {
-        display.SetCharAt(i, ' ', palette[data[i]], 3);
+        {-1, 1},
+        { 0, 1},
+        { 1, 1},
+        {-1, 0},
+        //{ 0, 0},
+        { 1, 0},
+        {-1,-1},
+        { 0,-1},
+        { 1,-1},
     }
-}
+};
+
+int     GetColor(int offset, ConsoleGraphics::Display &display, const std::vector<int>& data, bool markupBorders);
+void    PutFlameToDisplay(ConsoleGraphics::Display &display, const Blur::FlameModel &model);
 
 int main()
 {
@@ -32,7 +47,42 @@ int main()
 
         PutFlameToDisplay(display, flameModel);
     },    
-    20,
+    30,
     false);
 }
 
+int     GetColor(int offset, ConsoleGraphics::Display &display, const std::vector<int>& data, bool markupBorders)
+{
+    if (!markupBorders)   
+        return palette[data[offset]];
+
+    int     width = display.GetWidth();
+    int     height = display.GetHeight();
+    int     dispSize = width * height;
+    int     flags = 0;
+    
+    for (auto& kernelItem: kernel)
+    {
+        int     index = kernelItem.y * width + kernelItem.x + offset;
+
+        if (index < 0 || index >= dispSize)
+            continue;
+
+        if (data[index] > 0)
+            flags |= 2;
+        else if (data[index] == 0)
+            flags |= 1;
+    }
+
+    return flags == 3 ? F_BLUE : palette[data[offset]];
+}
+
+void PutFlameToDisplay(ConsoleGraphics::Display &display, const Blur::FlameModel &model)
+{
+    const std::vector<int>&   data = model.GetData();
+        
+    for (size_t i = 0, c = data.size(); i < c; i++)
+    {
+        display.SetCharAt(i, ' ', GetColor(i, display, data, true), 3);
+    }
+}
