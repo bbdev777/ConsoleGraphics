@@ -11,6 +11,17 @@ RUN apt-get install libncurses5-dev libncursesw5-dev
 
 RUN mkdir -p /src/ConsoleGraphics
 RUN mkdir -p /build-folder
+
+RUN --mount=type=bind,source=./Sources/glm/,target=/src/ConsoleGraphics/Stars/Sources/glm \
+    --mount=type=cache,target=/build-folder \
+    cd /build-folder \
+    && cmake \
+        -DGLM_BUILD_TESTS=OFF \
+        -DBUILD_SHARED_LIBS=OFF \
+        -B build /src/ConsoleGraphics/Stars/Sources/glm/ \
+&& cmake --build build -- all \
+&& cmake --build build -- install
+
 RUN --mount=type=bind,source=.,target=/src/ConsoleGraphics \
     --mount=type=cache,target=/build-folder \
     cd /build-folder \
