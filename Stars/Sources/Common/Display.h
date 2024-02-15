@@ -34,7 +34,7 @@ namespace ConsoleGraphics
             size.ws_col = -1;
             size.ws_row = -1;
 
-            initscr();            
+            initscr();        
 	        start_color();
 
             init_color(COLOR_RED, 1000, 0, 0);
@@ -58,7 +58,7 @@ namespace ConsoleGraphics
             Resize();
         }
 
-        ~Display()
+        virtual ~Display()
         {
             curs_set(1);
             use_default_colors();

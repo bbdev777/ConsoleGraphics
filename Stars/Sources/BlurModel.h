@@ -13,6 +13,10 @@ namespace Blur
         {
         }
 
+        virtual ~BlurModel()
+        {
+        }
+
         virtual void SetBounds(int rightBound, int lowerBound)
         {
             this->rightBound = rightBound;
