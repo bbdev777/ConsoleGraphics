@@ -26,7 +26,7 @@ namespace Blur
             buffers[1].resize(size);
         }
 
-        const std::vector<int> GetData() const
+        const std::vector<int>& GetData() const
         {
             return buffers[toBufferNum];
         }
