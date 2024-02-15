@@ -38,8 +38,8 @@ namespace ConsoleGraphics
 	        start_color();
 
             init_color(COLOR_RED, 1000, 0, 0);
-            init_color(COLOR_GREEN, 0, 850, 500);
-            init_color(COLOR_BLUE, 0, 0, 1000);
+            init_color(COLOR_GREEN, 0, 850, 700);
+            init_color(COLOR_BLUE, 0, 0, 600);
             init_color(COLOR_YELLOW, 850, 1000, 0);
             init_color(COLOR_CYAN, 0, 1000, 1000);
             init_color(COLOR_MAGENTA, 1000, 500, 0);
@@ -61,6 +61,7 @@ namespace ConsoleGraphics
         ~Display()
         {
             curs_set(1);
+            use_default_colors();
             endwin();
         }
 
