@@ -16,6 +16,27 @@ find_package(glm CONFIG REQUIRED)
 #target_link_libraries(main PRIVATE glm::glm-header-only) #example
 
 ##############################################################################################
+# 3d objects
+##############################################################################################
+add_executable(3dObjects 
+    3dObjects.cpp
+    Sources/Common/ConsoleApp.cpp
+    Sources/3d/Triangle.cpp
+)
+
+target_include_directories(3dObjects PUBLIC
+    Sources/
+    Sources/Common/
+    Sources/3d/
+)
+
+target_link_libraries(3dObjects
+    ncurses
+    glm::glm-header-only
+)
+##############################################################################################
+
+##############################################################################################
 # Stars
 ##############################################################################################
 add_executable(Stars 
