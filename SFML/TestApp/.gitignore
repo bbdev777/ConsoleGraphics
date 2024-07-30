@@ -1,6 +1,7 @@
 *.pem
 *.p12
 *.pyc
+./build/*
 build/*
 .build/*
 .builds/*

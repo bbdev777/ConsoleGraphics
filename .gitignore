@@ -1,8 +1,0 @@
-*.pem
-*.p12
-*.pyc
-SFML/TestApp/build/*
-build/*
-.build/*
-.builds/*
-.vs/*
