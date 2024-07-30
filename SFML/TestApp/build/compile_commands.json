@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/alexey/Sources/SFML/TestApp/build",
+  "command": "/usr/bin/g++ -DSFML_STATIC -isystem /opt/vcpkg/installed/x64-linux/include -g -std=gnu++17 -o CMakeFiles/SfmlTest.Main.dir/src/main.cpp.o -c /home/alexey/Sources/SFML/TestApp/src/main.cpp",
+  "file": "/home/alexey/Sources/SFML/TestApp/src/main.cpp"
+}
+]

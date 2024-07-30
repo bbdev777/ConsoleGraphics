@@ -1,0 +1,3 @@
+/home/alexey/Sources/SFML/TestApp/build/CMakeFiles/SfmlTest.Main.dir
+/home/alexey/Sources/SFML/TestApp/build/CMakeFiles/edit_cache.dir
+/home/alexey/Sources/SFML/TestApp/build/CMakeFiles/rebuild_cache.dir
