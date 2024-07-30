@@ -32,7 +32,7 @@ target_include_directories(3dObjects PUBLIC
 
 target_link_libraries(3dObjects
     ncurses
-    glm::glm-header-only
+    glm::glm
 )
 ##############################################################################################
 
@@ -105,6 +105,6 @@ target_include_directories(Fireballs PUBLIC
 
 target_link_libraries(Fireballs
     ncurses
-    glm::glm-header-only
+    glm::glm
 )
 ##############################################################################################
