@@ -1,4 +1,8 @@
 {
+    "cmake.configureSettings":
+    {
+		"CMAKE_TOOLCHAIN_FILE" : "/opt/vcpkg/scripts/buildsystems/vcpkg.cmake"
+    },
     "files.associations": {
         "__locale": "cpp",
         "string": "cpp",
