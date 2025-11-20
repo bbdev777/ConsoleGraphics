@@ -12,7 +12,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pthread -pipe -Wall -fPIC -Werror=return-type")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -pipe -Wall -fPIC -Werror=return-type")
 
-find_package(glm CONFIG REQUIRED)
+include(/usr/share/cmake/glm/glmConfig.cmake)
+#find_package(glm CONFIG REQUIRED)
 #target_link_libraries(main PRIVATE glm::glm-header-only) #example
 
 ##############################################################################################
@@ -105,6 +106,6 @@ target_include_directories(Fireballs PUBLIC
 
 target_link_libraries(Fireballs
     ncurses
-    glm::glm
+    glm::glm-header-only
 )
 ##############################################################################################
